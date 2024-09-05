@@ -1,0 +1,27 @@
+<Set label>Accordion</Set> <!-- Replace with an accessibility label for the accordion -->
+<Set query=accordion_query post_type=loan-faq count=10 /> <!-- Replace with loop query parameters to fetch the accordion content -->
+<Set template=accordion_title><Field title /></Set> <!-- Replace with field name for the accordion section titles -->
+<Set template=accordion_content><Field content /></Set> <!-- Replace with field name for the accordion section content -->
+
+<Set id_prefix><Format case=pascal><Get label /></Format></Set>
+<div class="accordion" aria-label="{Get label}" role="tablist">
+  <Loop query=accordion_query>
+  <div class="accordion__section {If count value=1}active{/If}">
+    <button class="accordion__button" 
+            role="tab"
+            aria-expanded="{If count value=1}true{Else /}false{/If}"
+            aria-controls="{Get id_prefix}Section{Get loop=count}"
+            id="{Get id_prefix}Tab{Get loop=count}"><Get template=accordion_title /></button>
+    <div class="accordion__panel"
+         tabindex="0"
+         role="tabpanel"
+         id="{Get id_prefix}Section{Get loop=count}"
+         aria-labelledby="{Get id_prefix}Tab{Get loop=count}"
+         tag-attributes="{If count value=1}tabindex='0'{Else /}hidden tabindex='-1'{/If}">
+      <div class="accordion__panel__inner">
+        <Get template=accordion_content />
+      </div>
+    </div>
+  </div>
+  </Loop>
+</div>
